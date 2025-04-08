@@ -5,28 +5,29 @@
 using namespace std;
 
 //функция контроля вводимых данных
-bool UserInput(string input) {
-    //если строка пустая - ввод некорректен
-    if (input.empty()) return false;
-    //попытаться
-    try {
-        //преобразование введенного значения в тип
-        int number = stoi(input);
-}
-    catch ( ... ) //если возникла ошибка в блоке try
-    { return false; }
-    return true;
-}
-//метод ввода данных
-void EnterDigit(int& varLink, const string& label) {
-    string raw_input;
-    cout << label << " = ";
-    getline(cin, raw_input);
-    while (!UserInput(raw_input)) {
-        cout << label << " = ";
-        getline(cin, raw_input);
+bool UserInput(const std::string &input) {
+    // Если строка пустая - ввод некорректен
+    if (input.empty())
+        return false;
+
+    // Проверяем, состоит ли строка только из цифр
+    for (char c : input) {
+        if (!isdigit(c)) {
+            return false; // Если есть хотя бы один нецифровой символ, возвращаем false
+        }
     }
-    varLink = stoi(raw_input);
+
+    // Попытаться преобразовать введенное значение в тип int
+    try {
+        int number = stoi(input);
+        // Если введенное значение отрицательное - ввод некорректен
+        if (number < 1)
+            return false;
+    } catch (...) { // Если возникла ошибка в блоке try
+        return false;
+    }
+
+    return true; // Если все проверки пройдены, возвращаем true
 }
 
 //вычисление площади прямоугольника
